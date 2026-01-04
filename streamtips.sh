@@ -65,7 +65,7 @@ targURL=$(curl -L $targ | tr "\'" "\n" |
 	segment $outNAME%03d.mp4
 
 # merge segments into single file and create audio-only file for easy transcription
-echo $(ls test*) | sed 's/ /\n/g' |  sed 's/^/file /g' > temp && 
+echo $(ls $outNAME*) | sed 's/ /\n/g' |  sed 's/^/file /g' > temp && 
 ffmpeg -f concat -i temp -c copy "${outNAME}_all.mp4" && rm temp &&
 ffmpeg -i "${outNAME}_all.mp4" -vn -ac 2 -b:a 192k "${outNAME}_all.mp3"
 
