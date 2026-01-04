@@ -57,10 +57,12 @@ curl azleg.gov/actvlive | tr "\'" "\n" |  grep "\Khttp.*?media.*?m3u?8" -Poz
 
 # rips AZleg livestream in real-time, storing output in 20 minute chunks
 
+read -p "Target (url): " targ &&
 read -p "choose filename prefix: " outNAME &&
 targURL=$(curl -L $targ | tr "\'" "\n" |
 	grep "\Khttp.*?media.*?m3u?8" -Poz | tr -d '\0') &&
-	ffmpeg -i $targURL -c copy -segment_time 00:20:00 -f segment $outNAME%03d.mp4
+	ffmpeg -i $targURL -c copy -segment_time 00:20:00 -f -reset_timestamps 1 \
+	segment $outNAME%03d.mp4
 
 # for rhode island
 
