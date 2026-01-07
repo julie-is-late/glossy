@@ -96,7 +96,8 @@ ffmpeg -i "${outNAME}_all.mp4" -vn -ac 2 -b:a 192k "${outNAME}_all.mp3"
 curl $targ |  tr "\"" "\n" | grep  "\Khttps.*?1080.*?m3u?8" -Poz -m 1
 
 # stream counter
-curl $targ |  tr "\"" "\n" | grep '^https.*?m..?.$' -E | printf "there are $(wc -l) streams"
-
-curl $targ | grep "(?s)\Khttp[a-zA-Z0-9./]+m3u?8" -Poz -m 1
-
+curl $targ |  tr "\"" "\n" > counter_temp
+	sed 's/,/\n/g' counter_temp | grep '^https.*?m3u?8$' -E | \
+	printf "there are $(wc -l) m3u/m3u8 streams" &&
+	grep -P "http" counter_temp | grep "mp4$" |
+		printf "$(wc -l) mp4 files found\n"
