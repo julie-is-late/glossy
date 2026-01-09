@@ -8,6 +8,16 @@
 
 ### other scripts
 
+* _[livestream_rip.sh](https://github.com/jessicakay/glossy/blob/main/livestream_rip.sh)_
+
+    all-in-one script:
+
+        * extracts source playlist from webpage
+        * streams to ffmpeg, saving in user-specified intervals
+        * once a user stops ripper using ctrl-c, removes last partial segment
+        * merges all segments into unified files
+        * extracts audio into separate mp3 for easy transcription
+
 * _[transcript_tools.sh](https://github.com/jessicakay/glossy/blob/main/transcript_tools.sh)_
 
     extracts transcripts from Sliq platform, VTT files
