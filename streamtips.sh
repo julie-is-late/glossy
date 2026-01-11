@@ -76,3 +76,8 @@ ffmpeg -i "${outNAME}_all.mp4" -vn -ac 2 -b:a 192k "${outNAME}_all.mp3"
 # see: stream_counter.sh for full script
 curl $targ |  tr "\"" "\n" | grep  "\Khttps.*?1080.*?m3u?8" -Poz -m 1
 
+# output table of all files referenced on page
+curl $targ |  tr "\"" "\n" > counter_temp
+	cat counter_temp | tr "\"" "\n" | grep -P "https.*?[^\":]\....?.$" | \
+	grep -Po "\....?.$" | sort | uniq -c && echo -e "\n"
+

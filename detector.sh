@@ -27,7 +27,7 @@ if [[ $detect_m3u8 == 1 ]]; then
 	printf "\n\t-> detected 1 stream type=m3u8\n"
 	platform_type="rawm"
 elif [[ $detect_m3u8 > 1 ]]; then
-	printf "\n\t-> detected $detect_m3u8 m3u8 streams\n\t ~ enumering files: \n\n"
+	printf "\n\t-> detected $detect_m3u8 m3u8 streams\n\t ~ enumering: \n\n"
 	echo $buffer |  tr "\"" "\n" > counter_temp
 	cat counter_temp | tr "\"" "\n" | grep -P "https.*?[^\":]\....?.$" | \
 	grep -Po "\....?.$" | sort | uniq -c && echo -e "\n"
