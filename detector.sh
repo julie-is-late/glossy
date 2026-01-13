@@ -35,6 +35,16 @@ function file_enumerater (){
 	fi
 	}
 
+function grab_menu() {
+	case "$file_fmt" in
+		v) ffmpeg -i $(curl $targ | grep "\Khttps.*?m3u?8" -oP | grep "https" -m 1) -c copy $outNAME.mp4 ; return ;;
+		a) ffmpeg -i $(curl $targ | grep "\Khttps.*?m3u?8" -oP | grep "https" -m 1) -vn -ac 2 -b:a 192k $outNAME.mp3 ; return ;;
+		b) ffmpeg -i $(curl $targ | grep "\Khttps.*?m3u?8" -oP | grep "https" -m 1) -c copy $outNAME.mp4 &&
+			ffmpeg -i $outNAME.mp4 -vn -ac 2 -b:a 192k $outname.mp3
+			return ;;
+	esac
+	}
+
 if ! [[ -z $( echo $targ | grep "sliq" ) ]];
 	then printf "\n\t-> Sliq platform detected"
 	platform_type="sliq"
@@ -51,7 +61,7 @@ fi
 if  [[ -n $( echo $buffer | grep "\Khttps.*?m3u?8" -oP | grep "https" | uniq ) ]]; then
 	if [[ $detect_m3u8 == 1 ]]; then
 		printf "\n\t-> detected 1 stream type=m3u8\n \n\t~ attempting download...\n"
-		case "$file_fmt" in
+			case "$file_fmt" in
 			v) ffmpeg -i $(curl $targ | grep "\Khttps.*?m3u?8" -oP | grep "https" | uniq ) -c copy $outNAME.mp4 ; return ;;
 			a) ffmpeg -i $(curl $targ | grep "\Khttps.*?m3u?8" -oP | grep "https" | uniq ) -vn -ac 2 -b:a 192k $outNAME.mp3 ; return ;;
 			b) ffmpeg -i $(curl $targ | grep "\Khttps.*?m3u?8" -oP | grep "https" | uniq ) -c copy $outNAME.mp4 &&
@@ -61,7 +71,7 @@ if  [[ -n $( echo $buffer | grep "\Khttps.*?m3u?8" -oP | grep "https" | uniq ) ]
 	else
 		printf "\n\t-! stream not found... \n";
 		file_enumerater
-		return;
+#		return;
 	fi
 elif [[ $detect_m3u8 > 1 ]]; then
 	printf "\n\t-> detected $detect_m3u8 m3u8 streams\n\t"
@@ -69,16 +79,30 @@ elif [[ $detect_m3u8 > 1 ]]; then
 	read -p $'\t ~ multiple streams located, use -m 1 [y/n]?' m_one
 	printf "\n\n"
 	if [[ $m_one == "y" ]]; then
-		case "$file_fmt" in
-			v) ffmpeg -i $(curl $targ | grep "\Khttps.*?m3u?8" -oP | grep "https" -m 1) -c copy $outNAME.mp4 ; return ;;
-			a) ffmpeg -i $(curl $targ | grep "\Khttps.*?m3u?8" -oP | grep "https" -m 1) -vn -ac 2 -b:a 192k $outNAME.mp3 ; return ;;
-			b) ffmpeg -i $(curl $targ | grep "\Khttps.*?m3u?8" -oP | grep "https" -m 1) -c copy $outNAME.mp4 &&
-				ffmpeg -i $outNAME.mp4 -vn -ac 2 -b:a 192k $outname.mp3
-				return ;;
-		esac
+		grab_menu
 		ffmpeg -i $(curl $targ | grep "\Khttps.*?m3u?8" -oP | grep "https" -m 1) -c copy $outNAME.mp4
 	fi
 else
 	printf "\n\t-> no playlist found...\n"
-fi
 
+	if [[ platform_type="invs" ]]; then
+		printf "\n\t ~ grabbing identifiers...\n\n"
+		curl -s -m 10 --no-keepalive $targ > temp.txt
+		if ! [[ -z $(echo $targ | grep -Pozi "ClientID="| tr -d '\0' ) ]] && ! [[ -z $(echo $targ | grep -Pozi "eventID=" | tr -d '\0' ) ]]; then
+			clientid="$(echo $targ | grep -Pozi "ClientID=\K[0-9]+" | tr -d '\0' )"
+			event_id="$(echo $targ | grep -Pozi "eventID=\K[0-9]+" | tr -d '\0' )"
+			printf "\n\t ~ client ID $clientid\n\t ~ event ID $event_id\n\n\t ~ attempting to grab stream..\n\n"
+			new_targ="https://api.v3.invintus.com/StreamURI/hls/$clientid/$event_id/media.m3u8"
+			printf "\n$new_targ\n"
+			if ! [[ -z $(  curl -s $new_targ ) ]]; then
+				targ=$new_targ
+				ffmpeg -i $targ -c copy $outNAME.mp4
+			fi
+		elif ! [[ -z $(echo $buffer| grep -Pozi "ClientID=" ) ]]; then
+			clientid="$(cat temp.txt | tr "\'" " " | grep -Pozi "ClientID\K.*?[0-9]+" | tr -d '\0' )"
+			event_id="$(cat temp.txt | tr "\'" " " | grep -Pozi "eventID.*?\K[0-9]+[^\{\}]" -m 1 | tr -d '\0' )"
+			printf "\n\t ~ client ID $clientid\n\t ~ event ID $event_id\n"
+			rm temp.txt
+		fi
+	fi
+fi
