@@ -74,4 +74,5 @@
 
     download and run most up to date livestream ripper version from repo
 
-        curl -s https://raw.githubusercontent.com/jessicakay/glossy/refs/heads/main/livestream_rip.sh > liverip.sh && source liverip.sh
+        curl -s https://raw.githubusercontent.com/jessicakay/glossy/refs/heads/main/livestream_rip.sh > liverip.sh &&
+        source liverip.sh
