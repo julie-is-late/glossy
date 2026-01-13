@@ -107,3 +107,14 @@
 * _[stream_counter.sh](https://github.com/jessicakay/glossy/blob/main/stream_counter.sh)_
 
     * maps out site and displays livestreams, based on Rhode Island Capital TV website
+
+* _detector_rip.sh](https://github.com/jessicakay/glossy/blob/main/_detector.sh)_
+
+    all-in-one script:
+
+    * combines most other scripts and code examples into a workflow
+    * attempts to detect platform by looking for cues in URL and body of HTML
+    * attempts to download through different types of curl request
+    * livestream enumerator from _[stream_counter.sh](https://github.com/jessicakay/glossy/blob/main/stream_counter.sh)_
+
+
