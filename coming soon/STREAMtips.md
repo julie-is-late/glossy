@@ -71,3 +71,7 @@
         echo $(ls $outNAME*) | sed 's/ /\n/g' |  sed 's/^/file /g' > temp
         ffmpeg -f concat -i temp -c copy "${outNAME}_all.mp4" && rm temp &&
         ffmpeg -i "${outNAME}_all.mp4" -vn -ac 2 -b:a 192k "${outNAME}_all.mp3"
+
+    download and run most up to date livestream ripper version from repo
+
+        curl -s https://raw.githubusercontent.com/jessicakay/glossy/refs/heads/main/livestream_rip.sh > liverip.sh && source liverip.sh
