@@ -8,11 +8,16 @@ The [first section](https://github.com/jessicakay/glossy) is meant for users to 
 
 ## install packages
 
-* code snippets are written in bash. You can either use them natively in linux (tested on ubuntu), or download Cygwin or Linux Subsystem for Linux (WSL). The syntax will be different for bash commands but once pacakges are installed, the rest of this should work on any linux shell wth minimal tweaking.
+* code snippets are written in bash. You can either use them natively in linux (tested on ubuntu), or download [Cygwin](https://www.cygwin.com/) or [Linux Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install). The syntax will be different for shell environments but once pacakges are installed, the rest of this should work on any linux shell wth minimal tweaking.
 
-    for apt package manager:
+    for apt package manager (ubuntu/debian):
 
-        sudo apt install ffmpeg jq xclip
+        sudo apt update && sudo apt install ffmpeg jq xclip
+
+    for homebrew (macOS and most linux flavors):
+
+        brew update
+        brew install ffmpeg jq xclip
 
 ### basic scripts for downloading files
 
