@@ -82,13 +82,24 @@
         ffmpeg -f concat -i temp -c copy "${outNAME}_all.mp4" && rm temp &&
         ffmpeg -i "${outNAME}_all.mp4" -vn -ac 2 -b:a 192k "${outNAME}_all.mp3"
 
+    run WhisperX LLM transcription in separate window
+
+        # requires  --segment_list $outNAME.m3u8 in command stack for ripper
+        # must have whisper installed
+
+        watch -g -n 1 --no-title grep -oE 'outNAME[0-9]+.mp4' $outNAME.m3u8 &&
+        tail -n 1 $outNAME.m3u8 | whisper --language English --model base.en \
+        --verbose True --task transcribe --output_format txt
+
     download and run most up to date livestream ripper version from repo
 
         curl -sL https://raw.githubusercontent.com/jessicakay/glossy/refs/heads/main/livestream_rip.sh > liverip.sh &&
         source liverip.sh
 
 
-### other scripts
+## other scripts
+
+### examples of more complex scripts using code snippets above
 
 * _[livestream_rip.sh](https://github.com/jessicakay/glossy/blob/main/livestream_rip.sh)_
 
@@ -108,7 +119,7 @@
 
     * maps out site and displays livestreams, based on Rhode Island Capital TV website
 
-* _detector_rip.sh](https://github.com/jessicakay/glossy/blob/main/_detector.sh)_
+* _[detector_rip.sh](https://github.com/jessicakay/glossy/blob/main/_detector.sh)_
 
     all-in-one script:
 
