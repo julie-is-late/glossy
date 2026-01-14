@@ -21,6 +21,10 @@ The [first section](https://github.com/jessicakay/glossy) is meant for users to 
         brew update
         brew install ffmpeg jq xclip
 
+* download repo
+
+        gh repo clone jessicakay/glossy
+
 
 ### basic scripts for downloading files
 
