@@ -1,5 +1,13 @@
 
 
+sudo apt update &&
+sudo apt install python3-selenium
+python -m pip install --upgrade pip
+pip install -U openai-whisper
+
+if [[ $(command -v pip) == TRUE ]];
+print "\n ~ pip installed at $(command -v pip)\n"
+
 echo -e "\n[L]ocal .env\n[P]rofile ~/.bashrc\n[B]oth"
 read -p $'\nchoose session type: ' s_c
 if [[ $s_c == "b" ]] || [[ $s_c == "l" ]]; then
