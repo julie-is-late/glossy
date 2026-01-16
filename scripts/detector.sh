@@ -147,7 +147,7 @@ else
 			sliq | gran | invs) printf "\n\t-! error: $platform_type\n"
 				if ! [[ -z $(curl -s $targ | grep "\Khttps.*?mp4" -oPm 1) ]]; then
 					printf "\n\t-> direct mp4 download found"
-					ffmpeg -i $(curl -s $targ | grep "\Khttps.*?mp4" -oPm 1) -c copy $outNAME.mp4
+					ffmpeg -i $(curl -s $targ | grep "\Khttps.*?mp4" -oPm 1 ) -c copy $outNAME.mp4
 				else
 					printf "\n\t-! $platform_type detected, but no media files found\n\n\t ~ exiting... \n\n"
 					return
@@ -155,7 +155,12 @@ else
 			*)
 				if ! [[ -z $(curl -s $targ | grep "\Khttps.*?mp4" -oPm 1) ]]; then
 					printf "\n\t-> direct mp4 download found"
-					ffmpeg -i $(curl -s $targ | grep "\Khttps.*?mp4" -oPm 1) -c copy $outNAME.mp4
+					url_list="$(curl -s $targ | grep "\Khttps.*?mp4" -oPm 1 )"
+					printf "\n\n" && echo $url_list | tr " " "\n" | nl
+					printf "\n\t ~ "
+					read -p "choose [number]: " num_choice && printf "\n\n"
+					wget --show-progress -q $(echo $url_list | tr " " "\n" | awk "NR==$num_choice")
+					return
 				else
 					printf "\n\t-! likely self-hosted but no media files found\n\n\t ~ exiting... \n\n"
 				fi;;
