@@ -92,7 +92,8 @@ The [first section](https://github.com/jessicakay/glossy) is meant for users to 
 
             folder_name=$(echo $targ | grep -Po "http?s\:\/\/\K.*?\/" | sed 's/[\/."www"]//g')
             mkdir $folder_name && cd $folder_name &&
-            wget $(curl -L $targ | tr " " "\n" | grep -Po "http.*?.m[p4][a3]" ) --random-wait 15 &&
+            wget $(curl -L $targ | tr " " "\n" | grep -Po "http.*?.m[p4][a3]" ) \
+                --random-wait 15
             whisper *.mp3|*.mp4 --language English --model base.en \
             --verbose True --task transcribe --output_format vtt &&
             grep -Pi "keyword" *.vtt
