@@ -29,13 +29,28 @@ case "$s_type" in
 				tr "{|}" "\ " | tr ",|\"" " " | grep -i $kw
 			printf "\n"
 	fi;;
+#	d)
+#	folder_name=$(echo $targ | grep -Po "http?s\:\/\/\K.*?\/" | sed 's/[\/."www"]//g')
+#		curl -L $targ > outfile_temp
+#        mkdir $folder_name && cd $folder_name
+#        printf "\n\t ~ directory: $folder_name created\n"
+#        wget $(cat outfile_temp | tr " " "\n" | grep -Po "http.*?.vtt") --random-wait | \
+#		grep -Pi "$kw" *.vtt ; rm outfile_temp;;
+#	*) return;;
 	d)
-	folder_name=$(echo $targ | grep -Po "http?s\:\/\/\K.*?\/" | sed 's/[\/."www"]//g')
+		folder_name=$(echo $targ | grep -Po "http?s\:\/\/\K.*?\/" | sed 's/[\/."www"]//g' )
+		curl -L $targ > outfile_temp
         mkdir $folder_name && cd $folder_name
         printf "\n\t ~ directory: $folder_name created\n"
-
-        wget $(curl $targ | tr " " "\n" | grep -Po "http.*?.vtt") --random-wait | \
-		grep -Pi "$kw" *.vtt;;
+        cat ../outfile_temp | tr " " "\n" | grep -Po "http.*?.vtx" > file_list
+        printf "\n\t -> located $( wc -l file_list ) VTT files"
+        if [[ $(wc -l file_list ) > 0 ]]; then
+			wget $(cat outfile_temp | tr " " "\n" | grep -Po "http.*?.vtt" ) --random-wait | \
+			grep -Pi "$kw" *.vtt
+		else
+			printf "\n\t ~ $(cat ../outfile_temp | tr " " "\n" | \
+				grep -Po "http.*?.m[4p][a3]" -c ) audio files found.\n"
+		fi;;
 	*) return;;
 esac
 # empty keyword saves transcript to filename using last 16 characters of URL string
