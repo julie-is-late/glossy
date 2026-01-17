@@ -85,7 +85,8 @@ The [first section](https://github.com/jessicakay/glossy) is meant for users to 
 
     download and search a full year of hearings and deliberations in California for immigration keywords
 
-        wget $(curl $targ | tr " " "\n" | grep -Po "http.*?.vtt") --random-wait && grep -Pi "immigration" *.vtt
+        wget $(curl $targ | tr " " "\n" | grep -Po "http.*?.vtt") \
+            --random-wait && grep -Pi "immigration" *.vtt
 
 
 ### livestream tools
