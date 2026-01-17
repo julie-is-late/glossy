@@ -154,6 +154,11 @@ The [first section](https://github.com/jessicakay/glossy) is meant for users to 
         python -m pip install --upgrade pip
         pip install -U openai-whisper
 
+* some systems may require a Python virtual environment
+
+        python3 -m venv .venv
+        source .venv/bin/activate
+
 ### examples of more complex scripts using code snippets above
 
 * _[livestream_rip.sh](https://github.com/jessicakay/glossy/blob/main/scripts/livestream_rip.sh)_
