@@ -19,7 +19,7 @@ The [first section](https://github.com/jessicakay/glossy) is meant for users to 
     > for homebrew (macOS and most linux flavors):
 
         brew update
-        brew install ffmpeg jq xclip
+        brew install ffmpeg jq xclip dos2unix
 
 * download repo
 
@@ -83,11 +83,12 @@ The [first section](https://github.com/jessicakay/glossy) is meant for users to 
 
     convert VTT files to spreadsheets (.csv)
 
-        sudo apt get instal dos2unix
+        # requires dos2unix
         dos2unix temp.vtt
         cat temp.vtt | sed 's/\ --> \|\n/\n/g' | awk '{print "\"" $0 "\","}' > "${file_name}"
         cat $file_name | sed 's/\"\",//g' | tr "\n" " " |
             awk '{print "\t" $0}' | sed  's/  /\n/g' >  "${file_name}"_temp.csv
+
 
 
 
