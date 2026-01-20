@@ -48,6 +48,7 @@ The [first section](https://github.com/jessicakay/glossy) is meant for users to 
 
 
 
+
 ### working with Sliq pages
 
 * these features are snippets of code for working wth Sliq, specifically around parsing subtitles and converting them to transcripts
@@ -87,6 +88,7 @@ The [first section](https://github.com/jessicakay/glossy) is meant for users to 
         cat temp.vtt | sed 's/\ --> \|\n/\n/g' | awk '{print "\"" $0 "\","}' > "${file_name}"
         cat $file_name | sed 's/\"\",//g' | tr "\n" " " |
             awk '{print "\t" $0}' | sed  's/  /\n/g' >  "${file_name}"_temp.csv
+
 
 
 ### other transcript tools
